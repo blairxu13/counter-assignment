@@ -1,22 +1,42 @@
-// import necessary react testing library helpers here
-// import the Counter component here
+import { render, screen, fireEvent } from '@testing-library/react';
+import Counter from '../components/Counter'; // Adjust the path as needed
 
 beforeEach(() => {
-  // Render the Counter component here
-})
+  render(<Counter />);
+});
 
 test('renders counter message', () => {
-  // Complete the unit test below based on the objective in the line above
+  // Check if the Counter header is in the document
+  const counterHeader = screen.getByText(/Counter/i);
+  expect(counterHeader).toBeInTheDocument();
 });
 
 test('should render initial count with value of 0', () => {
-  // Complete the unit test below based on the objective in the line above
+  // Check if the initial count value is 0 using data-testid
+  const countValue = screen.getByTestId('count');
+  expect(countValue).toHaveTextContent('0');
 });
 
 test('clicking + increments the count', () => {
-  // Complete the unit test below based on the objective in the line above
+  // Find the increment button and click it
+  const incrementButton = screen.getByText('+');
+  fireEvent.click(incrementButton);
+
+  // Check if the count has incremented using data-testid
+  const countValue = screen.getByTestId('count');
+  expect(countValue).toHaveTextContent('1');
 });
 
 test('clicking - decrements the count', () => {
-  // Complete the unit test below based on the objective in the line above
+  // First increment the count to ensure we have something to decrement
+  const incrementButton = screen.getByText('+');
+  fireEvent.click(incrementButton);
+
+  // Then click the decrement button
+  const decrementButton = screen.getByText('-');
+  fireEvent.click(decrementButton);
+
+  // Check if the count has decremented back to 0 using data-testid
+  const countValue = screen.getByTestId('count');
+  expect(countValue).toHaveTextContent('0');
 });
